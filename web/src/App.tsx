@@ -1,36 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+
+import { useState, useEffect } from 'react';
+import FormAluno from './modules/components/FormAluno';
+import ListaAlunos from './modules/components/ListaAlunos';
+import axios from 'axios';
+import { Aluno } from './modules/components/FormAluno/interface';
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+  const [, setAlunos] = useState([]);
+  const [alunoEdicao, setAlunoEdicao] = useState<Aluno | null>(null);
+
+  const fetchAlunos = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/alunos');
+      setAlunos(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar alunos", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAlunos(); 
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
+      <h1>{alunoEdicao ? 'Editar Aluno' : 'Cadastrar Aluno'}</h1>
+      <FormAluno alunoEdicao={alunoEdicao} fetchAlunos={fetchAlunos} setAlunoEdicao={setAlunoEdicao} />
+      
+      <h2>Lista de Alunos</h2>
+      <ListaAlunos setAlunoEdicao={setAlunoEdicao} fetchAlunos={fetchAlunos} />
+    </div>
+  );
 }
 
-
-export default App
+export default App;
