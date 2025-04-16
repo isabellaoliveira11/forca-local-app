@@ -1,6 +1,15 @@
+import { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
 import { Aluno } from './interface';
-import { useState, useEffect, FormEvent } from 'react';
+import {
+  FormContainer,
+  Input,
+  Select,
+  Label,
+  Button,
+  ErrorMessage,
+  FlexContainer
+} from './styles'; // Importando os Styled Components
 
 interface FormAlunoProps {
   alunoEdicao: Aluno | null;
@@ -10,7 +19,7 @@ interface FormAlunoProps {
 
 function FormAluno({ alunoEdicao, fetchAlunos, setAlunoEdicao }: FormAlunoProps) {
   const [nome, setNome] = useState('');
-  const [idade, setIdade] = useState<number | ''>(''); // Número ou vazio
+  const [idade, setIdade] = useState<number | ''>(''); 
   const [sexo, setSexo] = useState('');
   const [objetivo, setObjetivo] = useState('');
   const [tipo_plano, setTipoPlano] = useState('');
@@ -67,12 +76,11 @@ function FormAluno({ alunoEdicao, fetchAlunos, setAlunoEdicao }: FormAlunoProps)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      {errorMessage && <div className="text-red-500 text-sm italic mb-4">{errorMessage}</div>}
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="nome">Nome:</label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    <FormContainer onSubmit={handleSubmit}>
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <div>
+        <Label htmlFor="nome">Nome:</Label>
+        <Input
           id="nome"
           type="text"
           value={nome}
@@ -80,10 +88,9 @@ function FormAluno({ alunoEdicao, fetchAlunos, setAlunoEdicao }: FormAlunoProps)
           placeholder="Nome"
         />
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="idade">Idade:</label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <div>
+        <Label htmlFor="idade">Idade:</Label>
+        <Input
           id="idade"
           type="number"
           value={idade}
@@ -91,10 +98,9 @@ function FormAluno({ alunoEdicao, fetchAlunos, setAlunoEdicao }: FormAlunoProps)
           placeholder="Idade"
         />
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="sexo">Sexo:</label>
-        <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <div>
+        <Label htmlFor="sexo">Sexo:</Label>
+        <Select
           id="sexo"
           value={sexo}
           onChange={(e) => setSexo(e.target.value)}
@@ -103,12 +109,11 @@ function FormAluno({ alunoEdicao, fetchAlunos, setAlunoEdicao }: FormAlunoProps)
           <option value="Masculino">Masculino</option>
           <option value="Feminino">Feminino</option>
           <option value="Outro">Outro</option>
-        </select>
+        </Select>
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="objetivo">Objetivo:</label>
-        <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <div>
+        <Label htmlFor="objetivo">Objetivo:</Label>
+        <Select
           id="objetivo"
           value={objetivo}
           onChange={(e) => setObjetivo(e.target.value)}
@@ -117,12 +122,11 @@ function FormAluno({ alunoEdicao, fetchAlunos, setAlunoEdicao }: FormAlunoProps)
           <option value="Emagrecimento">Emagrecimento</option>
           <option value="Ganho de Massa">Ganho de Massa</option>
           <option value="Manutenção">Manutenção</option>
-        </select>
+        </Select>
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="tipo_plano">Tipo de Plano:</label>
-        <select
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <div>
+        <Label htmlFor="tipo_plano">Tipo de Plano:</Label>
+        <Select
           id="tipo_plano"
           value={tipo_plano}
           onChange={(e) => setTipoPlano(e.target.value)}
@@ -132,35 +136,26 @@ function FormAluno({ alunoEdicao, fetchAlunos, setAlunoEdicao }: FormAlunoProps)
           <option value="Trimestral">Trimestral</option>
           <option value="Semestral">Semestral</option>
           <option value="Anual">Anual</option>
-        </select>
+        </Select>
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="data_matricula">Data Matrícula:</label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <div>
+        <Label htmlFor="data_matricula">Data Matrícula:</Label>
+        <Input
           id="data_matricula"
           type="date"
           value={dataMatricula}
           onChange={(e) => setDataMatricula(e.target.value)}
-          placeholder="Data Matrícula"
         />
       </div>
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit"
-        >
+      <FlexContainer>
+        <Button primary type="submit">
           {alunoEdicao ? 'Atualizar Aluno' : 'Cadastrar Aluno'}
-        </button>
-        <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-          onClick={resetForm}
-        >
+        </Button>
+        <Button type="button" onClick={resetForm}>
           Limpar
-        </button>
-      </div>
-    </form>
+        </Button>
+      </FlexContainer>
+    </FormContainer>
   );
 }
 
