@@ -28,14 +28,19 @@ export const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
             --Font-text: #1e1e1e;
           }
         `}
-  
+
   html,
   body,
-  #__next {
+  #__next,
+  #root {
     margin: 0;
     padding: 0;
     font-family: "Inter", sans-serif;
     background-color: var(--BackgroundColor);
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
   }
 
   mark {
@@ -52,7 +57,6 @@ export const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
   }
-
 
   h1, h2, h3, h4, p, #text {
     margin: 0;
@@ -93,5 +97,43 @@ export const GlobalStyles = createGlobalStyle<GlobalStylesProps>`
     border: none;
     background: transparent;
   }
-  
+
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+      animation: logo-spin infinite 20s linear;
+    }
+  }
+
+  .card {
+    padding: 2em;
+  }
+
+  .read-the-docs {
+    color: #888;
+  }
+
 `;
